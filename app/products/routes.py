@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from app import db
 from app.models import Product
 from app.products.forms import ProductForm
+from app.products.utils import get_product_data
 
 from flask import Blueprint
 
@@ -14,8 +15,8 @@ products = Blueprint('products', __name__)
 def new_product():
 	form = ProductForm()
 	if form.validate_on_submit():
-		# TODO: Scrape Amazon for other info
-		product = Product(name="Dummy name", seller="Amazon Mexico", currency_code="MXN", current_price=385, optimal_price=form.optimal_price.data, available=True, link=form.link.data, author=current_user)
+		data = get_product_data(form.link.data)
+		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', ""), current_price=data.get('price', -1), optimal_price=form.optimal_price.data, available=data.get('availability', True), link=form.link.data, author=current_user)
 		db.session.add(product)
 		db.session.commit()
 		flash("Product added successfully.", 'success');
