@@ -2,6 +2,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from app import db, login_manager
 from flask_login import UserMixin
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -38,11 +39,12 @@ class Product(db.Model):
 	name = db.Column(db.String(500), nullable=False)
 	seller = db.Column(db.String(100), nullable=False)
 	currency_code = db.Column(db.String(3), nullable=False)
-	current_price = db.Column(db.String(15), nullable=False)
+	current_price = db.Column(db.Float, nullable=False)
 	optimal_price = db.Column(db.Float, nullable=False)
 	available = db.Column(db.String(100), nullable=False, default=True)
 	link = db.Column(db.String(1000), nullable=False)
 	img = db.Column(db.String(1000), default="https://static.im-a-puzzle.com/gallery/Animals/Dogs/Puppy-dog-cream.jpg")
+	date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):

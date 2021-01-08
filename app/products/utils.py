@@ -88,7 +88,9 @@ def get_product_data(form_data):
 
 	price_el = soup.find(id="price_inside_buybox")
 	price_temp = price_el.get_text(strip=True) if price_el else None
-	price = price_temp.replace(u'\xa0', u' ') if price_temp else None
+	price_string = price_temp.replace(u'\xa0', u' ') if price_temp else None
+	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None
+	price = float(matches[0]) if len(matches) == 1 else None
 	if price:
 		data['price'] = price
 	else:
