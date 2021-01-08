@@ -8,15 +8,27 @@ import json
 import random
 import re
 import time
+from datetime import datetime
+
+
+def send_product_notification():
+	print("sending product notification...")
 
 
 def update_products():
 	app = create_app()
+	now = datetime.utcnow()
 	with app.app_context():
 		for product in Product.query.all():
 			data = update_product_data(product.link, product.optimal_price)
 			product.price = data['price']
 			product.available = data.get('availability', "")
+			if not product.last_notification or (now - product.last_notification).days >= 3:
+				if product.price <= product.optimal_price:
+					product.last_notification = now
+					send_product_notification()
+			if (now - product.date_added).days >= 30:
+				db.session.delete(product)
 			time.sleep(10)
 		db.session.commit()
 

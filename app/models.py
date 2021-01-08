@@ -45,6 +45,7 @@ class Product(db.Model):
 	link = db.Column(db.String(1000), nullable=False)
 	img = db.Column(db.String(1000), default="https://static.im-a-puzzle.com/gallery/Animals/Dogs/Puppy-dog-cream.jpg")
 	date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	last_notification = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
