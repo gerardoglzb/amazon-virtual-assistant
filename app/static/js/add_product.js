@@ -1,0 +1,42 @@
+$(document).ready(function() {
+	$('form').on('submit', function(e) {
+		$.ajax({
+			data: $('form').serialize()
+			type: 'POST',
+			url: "{{ url_for('add_product') }}"
+		})
+		.done(function(data, status, request) {
+			if (data.error) {
+				alert(data.error);
+			} // else {
+				// var status_url = request.getResponseHeader('Location');
+				// check_job_status(status_url);
+			// }
+		});
+		e.preventDefault();
+	});
+});
+
+function check_job_status(status_url) {
+	$.getJSON(status_url, function(data) {
+    switch (data.status) {
+		case "unknown":
+			alert("Unknown job");
+			break;
+		case "finished":
+			$("#cloud-img").attr("src", 'data:;base64,' + data['image']);
+			$("#cloud-img").removeAttr('hidden');
+          	break;
+		case "failed":
+			alert("Job failed");
+			break;
+		case "invalid":
+			alert("Invalid user. Make sure it exists and has reviews.");
+			break;
+		default:
+		setTimeout(function() {
+			check_job_status(status_url);
+		}, 1000);
+    }
+  });
+}

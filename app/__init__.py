@@ -4,6 +4,10 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from app.config import Config
+import redis
+from rq import Queue
+from rq.job import Job
+from worker import conn
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -11,6 +15,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
+q = Queue(connection=conn, default_timeout=1800)
 
 def create_app(config_class=Config):
 	app = Flask(__name__)

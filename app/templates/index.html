@@ -5,7 +5,7 @@
 		<article class="media content-section"><img class="rounded-circle article-img" src="{{ product.img }}"></img>
 			<div class="media-body">
 				<div class="article-metadata">
-					<a class="mr-2" href="#">{{ product.seller }}</a>
+					<a class="mr-2" href="{{ product.link }}" target="_blank">Amazon page</a>
 					<small class="text-muted">{{ product.available }}</small>
 				</div>
 				<h2><a class="article-title" href="{{ url_for('products.product', product_id=product.id) }}">{{ product.name }}</a></h2>
@@ -25,4 +25,4 @@
 			...
 		{% endif %}
 	{% endfor %}
-{% endblock %}
+{% endblock content %}
