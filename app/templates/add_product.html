@@ -44,6 +44,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		console.log("yessir");
 		$('form').on('submit', function(e) {
 			e.preventDefault();
 			my_url = "{{ url_for('products.add_product') }}";
@@ -52,22 +53,42 @@
 				type: 'POST',
 				url: '/product/add',
                 success: function (data) {
-                	console.log(data);
+                	if (data.error) {
+                		// TODO: Error handling.
+                		alert("Whoopsie!");
+                	} else {
+                		console.log("sending check job");
+                		check_job_status(data.location);
+                	}
                 }
 			});
-			// .done(function(data, status, request) {
-			// 	if (data.error) {
-			// 		alert(data.error);
-			// 	} else {
-			// 		// var status_url = request.getResponseHeader('Location');
-			// 		// check_job_status(status_url);
-			// 		console.log("we good");
-			// 		console.log(data);
-			// 		// console.log(request.getResponseHeader('price'));
-			// 		// console.log(request.getResponseHeader('plus'));
-			// 	}
-			// });
 		});
 	});
+
+	function check_job_status(status_url) {
+		console.log("checking...");
+		console.log(status_url);
+		$.getJSON(status_url, function(data) {
+		    switch (data.status) {
+				case "unknown":
+					alert("Unknown job");
+					break;
+				case "finished":
+					window.location.replace("{{ url_for('main.home') }}");
+		          	break;
+				case "failed":
+					alert("Job failed");
+					break;
+				case "invalid":
+					alert("Invalid user. Make sure it exists and has reviews.");
+					break;
+				default:
+					console.log("1 sec wait");
+					setTimeout(function() {
+						check_job_status(status_url);
+					}, 1000);
+	    	}
+	    });
+	}
 </script>
 {% endblock js %}

@@ -1,10 +1,15 @@
+from flask import flash, url_for, jsonify
+from flask_login import current_user
+from app import db, create_app
+from app.models import User, Product
 import requests
 from bs4 import BeautifulSoup
 import json
 import random
 
 
-def get_product_data(url):
+def get_product_data(form_data):
+	# TODO: Make sure form_data has link and optimal_price.
 	user_agents = [
 		# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -16,7 +21,7 @@ def get_product_data(url):
 
 	user_agent = random.choice(user_agents)
 	headers = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", "Accept-Encoding": "gzip, deflate, br", "Accept-Language": "es-ES,es;q=0.9,en;q=0.8", "Referer": "http://www.google.com/", "User-Agent": user_agent}
-	source = requests.get(url, headers=headers, timeout=10)
+	source = requests.get(form_data['link'], headers=headers, timeout=10)
 
 	if source.status_code != 200:
 		return False
@@ -65,7 +70,15 @@ def get_product_data(url):
 	if currency_code:
 		data['currency_code'] = currency_code
 
-	return data
+	data['link'] = form_data['link']
+	data['optimal_price'] = float(form_data['optimal_price'])
+	app = create_app()
+	with app.app_context():
+		author = User.query.get(form_data['user_id'])
+		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', ""), current_price=data.get('price', "-1"), optimal_price=data.get('optimal_price', -1.0), available=data.get('availability', ""), link=data.get('link', "amazon.com"), author=author)
+		product.img = data.get('image', product.img)
+		db.session.add(product)
+		db.session.commit()
 
 
 def update_product_data(url, user_agents):
