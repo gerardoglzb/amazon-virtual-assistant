@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort, Blueprint, jsonify
 from flask_login import current_user, login_required
 from app import db, q
-from app.models import Product
+from app.models import User, Product
 from app.products.forms import ProductForm
 from app.products.utils import get_product_data
 # import redis
@@ -24,12 +24,16 @@ def new_product():
 def add_product():
 	form = ProductForm()
 	if form.validate_on_submit():
-		if Product.query.count() < 20: # max concurrent products
-			form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
-			job = q.enqueue(get_product_data, form_data)
-			return jsonify(location=url_for('products.job_status', job_id=job.get_id()))
-		return jsonify(error="Too many products on the db.")
-	return jsonify(error=form.errors)
+		if Product.query.count() < 20:
+			if Product.query.filter_by(author=current_user).count() < 5: # max concurrent products
+				form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
+				job = q.enqueue(get_product_data, form_data)
+				return jsonify(location=url_for('products.job_status', job_id=job.get_id()))
+			else:
+				flash("Sorry. You've reached your product limit.", 'warning')
+		else:
+			flash("Sorry. Our database is full at the moment.", 'info')
+	return jsonify(error=form.errors) # could return nothing in some cases.
 
 
 @products.route("/status/<job_id>", methods=['GET'])

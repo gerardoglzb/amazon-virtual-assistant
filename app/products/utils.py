@@ -16,6 +16,7 @@ def send_product_notification():
 
 
 def update_products():
+	print("updating products...")
 	app = create_app()
 	now = datetime.utcnow()
 	with app.app_context():
@@ -31,6 +32,7 @@ def update_products():
 				db.session.delete(product)
 			time.sleep(10)
 		db.session.commit()
+	print("SUCCESS")
 
 
 def update_product_data(url, optimal_price):
