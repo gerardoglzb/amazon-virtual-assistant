@@ -8,6 +8,8 @@ import redis
 from rq import Queue
 from rq.job import Job
 from worker import conn
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -16,6 +18,7 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
 q = Queue(connection=conn, default_timeout=1800)
+
 
 def create_app(config_class=Config):
 	app = Flask(__name__)
@@ -34,5 +37,11 @@ def create_app(config_class=Config):
 	app.register_blueprint(products)
 	app.register_blueprint(main)
 	app.register_blueprint(errors)
+
+	from app.products.utils import update_products
+
+	scheduler = BackgroundScheduler()
+	scheduler.add_job(update_products, trigger='interval', seconds=10, id='update_products_id', replace_existing=True)
+	scheduler.start()
 
 	return app
