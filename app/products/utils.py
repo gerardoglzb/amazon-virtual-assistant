@@ -9,6 +9,7 @@ import random
 
 
 def get_product_data(form_data):
+	print("getting product data")
 	# TODO: Make sure form_data has link and optimal_price.
 	user_agents = [
 		# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -29,10 +30,17 @@ def get_product_data(form_data):
 	soup = BeautifulSoup(source.text, "lxml")
 	data = {}
 
+	print("soupped")
+
 	name_el = soup.find(id="productTitle")
 	name = name_el.get_text(strip=True) if name_el else None
 	if name:
 		data['name'] = name
+	else:
+		# Couldn't find name
+		return
+
+	print("name done")
 
 	seller_el = soup.find(id="sellerProfileTriggerId")
 	seller = seller_el.get_text(strip=True) if seller_el else None
@@ -44,6 +52,11 @@ def get_product_data(form_data):
 	price = price_temp.replace(u'\xa0', u' ') if price_temp else None
 	if price:
 		data['price'] = price
+	else:
+		# Couldn't find prize
+		return
+
+	print("price done")
 
 	# shipping_el_el = soup.find(id="ourprice_shippingmessage")
 	# shipping_el = shipping_el_el.find("span") if shipping_el_el else None
@@ -72,13 +85,19 @@ def get_product_data(form_data):
 
 	data['link'] = form_data['link']
 	data['optimal_price'] = float(form_data['optimal_price'])
+
+	print("before app")
+
 	app = create_app()
 	with app.app_context():
+		print("with context")
 		author = User.query.get(form_data['user_id'])
 		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', ""), current_price=data.get('price', "-1"), optimal_price=data.get('optimal_price', -1.0), available=data.get('availability', ""), link=data.get('link', "amazon.com"), author=author)
 		product.img = data.get('image', product.img)
 		db.session.add(product)
+		print("added")
 		db.session.commit()
+		print("committed")
 
 
 def update_product_data(url, user_agents):
