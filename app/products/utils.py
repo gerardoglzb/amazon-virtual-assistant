@@ -6,13 +6,19 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import random
+import re
+import time
 
 
 def update_products():
 	app = create_app()
 	with app.app_context():
-		for p in Product.query.all():
-			print(p.link)
+		for product in Product.query.all():
+			data = update_product_data(product.link, product.optimal_price)
+			product.price = data['price']
+			product.available = data.get('availability', "")
+			time.sleep(10)
+		db.session.commit()
 
 
 def update_product_data(url, optimal_price):
@@ -38,9 +44,13 @@ def update_product_data(url, optimal_price):
 
 	price_el = soup.find(id="price_inside_buybox")
 	price_temp = price_el.get_text(strip=True) if price_el else None
-	price = price_temp.replace(u'\xa0', u' ') if price_temp else None
+	price_string = price_temp.replace(u'\xa0', u' ') if price_temp else None
+	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None # Accepts negative numbers, just in case.
+	price = float(price_matches[0]) if len(price_matches) == 1 else None
 	if price:
 		data['price'] = price
+	else:
+		data['price'] = -1
 
 	availability_el_el = soup.find(id="availability")
 	availability_el = availability_el_el.find("span") if availability_el_el else None
@@ -90,7 +100,7 @@ def get_product_data(form_data):
 	price_temp = price_el.get_text(strip=True) if price_el else None
 	price_string = price_temp.replace(u'\xa0', u' ') if price_temp else None
 	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None
-	price = float(matches[0]) if len(matches) == 1 else None
+	price = float(price_matches[0]) if len(price_matches) == 1 else None
 	if price:
 		data['price'] = price
 	else:

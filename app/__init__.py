@@ -41,7 +41,7 @@ def create_app(config_class=Config):
 	from app.products.utils import update_products
 
 	scheduler = BackgroundScheduler()
-	scheduler.add_job(update_products, trigger='interval', seconds=10, id='update_products_id', replace_existing=True)
+	scheduler.add_job(update_products, trigger='interval', hours=6, id='update_products_id', replace_existing=True)
 	scheduler.start()
 
 	return app
