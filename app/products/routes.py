@@ -24,9 +24,11 @@ def new_product():
 def add_product():
 	form = ProductForm()
 	if form.validate_on_submit():
-		form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
-		job = q.enqueue(get_product_data, form_data)
-		return jsonify(location=url_for('products.job_status', job_id=job.get_id()))
+		if Product.query.count() < 20: # max concurrent products
+			form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
+			job = q.enqueue(get_product_data, form_data)
+			return jsonify(location=url_for('products.job_status', job_id=job.get_id()))
+		return jsonify(error="Too many products on the db.")
 	return jsonify(error=form.errors)
 
 
