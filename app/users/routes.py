@@ -54,7 +54,7 @@ def profile():
 		current_user.email = form.email.data
 		db.session.commit()
 		flash("Update successful.", 'success')
-		return redirect(url_for('users.account'))
+		return redirect(url_for('users.profile'))
 	if request.method == 'GET':
 		form.username.data = current_user.username
 		form.email.data = current_user.email

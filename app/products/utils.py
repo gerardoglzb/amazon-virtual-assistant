@@ -1,9 +1,12 @@
 from flask import flash, url_for, jsonify
 from flask_login import current_user
+from flask_mail import Message
+from app import mail
 from app import db, create_app
 from app.models import User, Product
 import requests
 from bs4 import BeautifulSoup
+import os
 import json
 import random
 import re
@@ -11,28 +14,33 @@ import time
 from datetime import datetime
 
 
-def send_product_notification():
-	print("sending product notification...")
+def send_product_notification(product, conn):
+	msg = Message('Your Amazon product is ready to be bought!', sender=os.environ.get('EMAIL_USER'), recipients=[product.author.email])
+	msg.body = f'''The following Amazon product has gone down in price to {product.price}:
+{product.link}
+
+Go buy it before you miss it!
+	'''
+	conn.send(msg)
 
 
 def update_products():
-	print("updating products...")
 	app = create_app()
 	now = datetime.utcnow()
 	with app.app_context():
-		for product in Product.query.all():
-			data = update_product_data(product.link, product.optimal_price)
-			product.price = data['price']
-			product.available = data.get('availability', "")
-			if not product.last_notification or (now - product.last_notification).days >= 3:
-				if product.price <= product.optimal_price:
-					product.last_notification = now
-					send_product_notification()
-			if (now - product.date_added).days >= 30:
-				db.session.delete(product)
-			time.sleep(10)
-		db.session.commit()
-	print("SUCCESS")
+		with mail.connect() as conn:
+			for product in Product.query.all():
+				data = update_product_data(product.link, product.optimal_price)
+				product.price = data['price']
+				product.available = data.get('availability', "")
+				if not product.last_notification or (now - product.last_notification).days >= 3:
+					if product.price <= product.optimal_price:
+						product.last_notification = now
+						send_product_notification(product, conn)
+				if (now - product.date_added).days >= 30:
+					db.session.delete(product)
+				time.sleep(10)
+			db.session.commit()
 
 
 def update_product_data(url, optimal_price):
@@ -60,7 +68,7 @@ def update_product_data(url, optimal_price):
 	price_temp = price_el.get_text(strip=True) if price_el else None
 	price_string = price_temp.replace(u'\xa0', u' ') if price_temp else None
 	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None # Accepts negative numbers, just in case.
-	price = float(price_matches[0]) if len(price_matches) == 1 else None
+	price = float(price_matches[0]) if price_matches and len(price_matches) == 1 else None
 	if price:
 		data['price'] = price
 	else:
@@ -114,7 +122,7 @@ def get_product_data(form_data):
 	price_temp = price_el.get_text(strip=True) if price_el else None
 	price_string = price_temp.replace(u'\xa0', u' ') if price_temp else None
 	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None
-	price = float(price_matches[0]) if len(price_matches) == 1 else None
+	price = float(price_matches[0]) if price_matches and len(price_matches) == 1 else None
 	if price:
 		data['price'] = price
 	else:
