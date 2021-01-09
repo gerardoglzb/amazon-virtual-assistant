@@ -34,7 +34,7 @@ def update_products():
 				product.price = data['price']
 				product.available = data.get('availability', "")
 				if not product.last_notification or (now - product.last_notification).days >= 3:
-					if product.price <= product.optimal_price:
+					if product.price >= 0 and product.price <= product.optimal_price:
 						product.last_notification = now
 						send_product_notification(product, conn)
 				if (now - product.date_added).days >= 30:
@@ -81,6 +81,20 @@ def update_product_data(url, optimal_price):
 		data['availability'] = availability
 
 	return data
+
+
+# Not always correct, but it's an educated guess.
+def get_default_currency_code(url):
+	currency_codes = {
+		'www.amazon.co.uk/': 'GBP',
+		'www.amazon.com/': 'USD',
+		'www.amazon.ca/': 'CAD',
+		'www.amazon.com.au/': 'AUD'
+	}
+	matches = re.findall(r"www.amazon.c[aom.uk]{1,5}/", url)
+	if matches:
+		return currency_codes[matches[0]]
+	return 'USD'
 
 
 def get_product_data(form_data):
@@ -160,7 +174,7 @@ def get_product_data(form_data):
 	app = create_app()
 	with app.app_context():
 		author = User.query.get(form_data['user_id'])
-		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', ""), current_price=data.get('price', "-1"), optimal_price=data.get('optimal_price', -1.0), available=data.get('availability', ""), link=data.get('link', "amazon.com"), author=author)
+		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', get_default_currency_code(form_data['link'])), current_price=data.get('price', -1.0), optimal_price=data.get('optimal_price', -1.0), available=data.get('availability', ""), link=data.get('link', "amazon.com"), author=author)
 		product.img = data.get('image', product.img)
 		db.session.add(product)
 		db.session.commit()

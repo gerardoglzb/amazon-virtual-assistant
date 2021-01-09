@@ -13,7 +13,8 @@ class ProductForm(FlaskForm):
 			'https://www.amazon.co.uk/',
 			'https://www.amazon.com/',
 			'https://www.amazon.ca/',
-			'https://www.amazon.com.au/')
+			'https://www.amazon.com.au/'
+		)
 
 		if not field.data.startswith(amazon_sites):
 			raise ValidationError("This website is not allowed.")
