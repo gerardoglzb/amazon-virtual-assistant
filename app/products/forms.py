@@ -13,7 +13,15 @@ class ProductForm(FlaskForm):
 			'https://www.amazon.co.uk/',
 			'https://www.amazon.com/',
 			'https://www.amazon.ca/',
-			'https://www.amazon.com.au/'
+			'https://www.amazon.com.au/',
+			'www.amazon.co.uk/',
+			'www.amazon.com/',
+			'www.amazon.ca/',
+			'www.amazon.com.au/',
+			'amazon.co.uk/',
+			'amazon.com/',
+			'amazon.ca/',
+			'amazon.com.au/'
 		)
 
 		if not field.data.startswith(amazon_sites):

@@ -15,3 +15,8 @@ def home():
 		products = Product.query.filter_by(author=user).order_by(Product.id.desc()).paginate(page=page, per_page=5)
 		return render_template('index.html', products=products)
 	return redirect(url_for('users.register'))
+
+
+@main.route('/about')
+def about():
+	return render_template('about.html', title="About")
