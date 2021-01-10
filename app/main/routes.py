@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, Blueprint
+from flask import render_template, request, url_for, Blueprint
 from flask_login import current_user
 from app.models import User, Product
 
@@ -14,9 +14,14 @@ def home():
 		user = User.query.filter_by(username=current_user.username).first_or_404()
 		products = Product.query.filter_by(author=user).order_by(Product.id.desc()).paginate(page=page, per_page=5)
 		return render_template('index.html', products=products)
-	return redirect(url_for('users.register'))
+	return render_template('landing_page.html')
 
 
 @main.route('/about')
 def about():
 	return render_template('about.html', title="About")
+
+
+@main.route('/test')
+def test():
+	return render_template('layout_test.html', title="Layout Test", active=1)

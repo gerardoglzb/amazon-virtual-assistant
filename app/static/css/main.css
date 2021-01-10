@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+	overflow-x: hidden;
+	font-family: 'Lato', sans-serif;
+}
+
+.navbar {
+	text-transform: uppercase;
+	font-weight: 750;
+	font-size: 1rem;
+	height: 4rem;
+}
+
+.navbar-nav {
+	height: 100%;
+}
+
+.nav-link {
+	margin-left: 1.5rem;
+}
+
+.navbar-light .navbar-nav .nav-link {
+	color: #444444;
+	border: solid medium transparent;
+}
+
+.navbar-light .navbar-nav .active {
+	border: solid medium black;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+	border: solid medium black;
+}
+
+.landing {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: table;
+  z-index: -1;
+}
+
+.landing {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	display: table;
+	z-index: -1;
+}
+
+.landing-wrap {
+	clip: rect(0, auto, auto, 0);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.home-inner {
+	position: fixed;
+	display: table;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center center;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	will-change: transform;
+	background-image: url("../images/landing_page_image.jpg")
+}
+
+.caption {
+	width: 100%;
+	max-width: 100%;
+	position: absolute;
+	top: 35%;
+	color: white;
+	z-index: 1;
+}
+
+.caption h1 {
+	font-size: 4rem;
+	font-weight: 750;
+	letter-spacing: .3rem;
+	text-shadow: .1rem  .1rem .75rem black;
+	padding-bottom: .5rem;
+}
+
+.caption h3 {
+	font-size: 2rem;
+	text-shadow: .1rem .1rem .35rem black;
+	padding-bottom: 1rem;
+}
+
+.btn-lg {
+	border-width: medium;
+	border-radius: 0;
+	text-shadow: .05rem 0.5rem .3rem black;
+	padding: .6rem 1.3rem;
+}
