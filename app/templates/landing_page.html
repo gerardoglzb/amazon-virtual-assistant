@@ -1,4 +1,14 @@
-{% extends 'layout.html' %}
-{% block content %}
-	<h1>Landing page</h1>
-{% endblock content %}
+{% extends 'base.html' %}
+{% block main_content %}
+    <div class="landing">
+        <div class="home-wrap">
+            <div class="home-inner"></div>
+        </div>
+    </div>
+
+    <div class="caption text-center">
+        <h1>AMAZON VIRTUAL ASSISTANT</h1>
+        <h3>Get your favorite products at their lowest prices.</h3>
+        <a class="btn btn-outline-light btn-lg" href="{{ url_for('users.register') }}">JOIN NOW</a>
+    </div>
+{% endblock main_content %}
