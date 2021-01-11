@@ -9,6 +9,11 @@
     <div class="caption text-center">
         <h1>AMAZON VIRTUAL ASSISTANT</h1>
         <h3>Get your favorite products at their lowest prices.</h3>
-        <a class="btn btn-outline-light btn-lg" href="{{ url_for('users.register') }}">JOIN NOW</a>
+        <div class="top-btn">
+        	<a class="btn btn-outline-light btn-lg" href="{{ url_for('users.register') }}">JOIN NOW</a>
+        </div>
+        <div class="bottom-btn">
+        	<a class="btn btn-outline-light btn-lg" href="{{ url_for('main.about') }}">LEARN MORE</a>
+        </div>
     </div>
 {% endblock main_content %}

@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired, Length, ValidationError
 
 
 class ProductForm(FlaskForm):
-	link = StringField('Link', validators=[DataRequired(), Length(min=2, max=1000)])
-	optimal_price = FloatField('OptimalPrice', validators=[DataRequired()])
+	link = StringField('Product URL:', validators=[DataRequired(), Length(min=2, max=1000)])
+	optimal_price = FloatField('Your preferred price:', validators=[DataRequired()])
 	submit = SubmitField('Add Product')
 
 	def validate_link(form, field):

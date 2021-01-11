@@ -22,7 +22,7 @@ def register():
 		db.session.commit()
 		flash(f"Registration successful.", 'success')
 		return redirect(url_for('users.login'))
-	return render_template('register.html', title="Register", form=form)
+	return render_template('register.html', title="Register", form=form, active=6)
 
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def login():
 			flash("Login successful.", 'success')
 			return redirect(next_page) if next_page else redirect(url_for('main.home'))
 		flash("Login unsuccessful. Check email and password.", 'danger')
-	return render_template('login.html', title="Login", form=form)
+	return render_template('login.html', title="Login", form=form, active=5)
 
 
 @users.route('/logout', methods=['GET', 'POST'])
@@ -58,7 +58,7 @@ def profile():
 	if request.method == 'GET':
 		form.username.data = current_user.username
 		form.email.data = current_user.email
-	return render_template('profile.html', title="Profile", form=form)
+	return render_template('profile.html', title="My Account", form=form, active=3)
 
 
 @users.route('/reset_password', methods=['GET', 'POST'])

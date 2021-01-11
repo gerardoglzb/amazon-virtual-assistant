@@ -1,4 +1,20 @@
-{% extends 'layout.html' %}
-{% block content %}
-	<h1>Landing page</h1>
-{% endblock content %}
+{% extends 'base.html' %}
+{% block main_content %}
+    <div class="about-caption text-center">
+        <h1>- HOW TO USE -</h1>
+        <br>
+        <div class="about-description">
+        	<h3>The Amazon Virtual Assistant helps you keep track of whatever products you wish to buy next on Amazon with just a few clicks, in order to know when their prices drop below a certain point.</h3>
+        	<br>
+        	<h3>Just add the product's url into our system (as well as your preferred price for said produt) and we'll do the rest for you, by notifying you as soon as we see the price is right!</h3>
+        </div>
+        <br>
+        <h1>- ABOUT THE PROJECT -</h1>
+        <br>
+        <div class="about-description">
+        	<h3>This website was created by <a href="https://github.com/gerardoglzb">Gerardo González</a> as part of <a href="https://www.youtube.com/c/TechWithTim/videos">Tech With Tim</a>'s <a href="https://twtcodejam.net/timathon/">Timathon</a> codejam in January 2021.</h3>
+        	<br>
+        	<h3>The project is open-source and you can take a look at the code right <a href="https://github.com/gerardoglzb/amazon-virtual-assistant">here</a>.</h3>
+        </div>
+    </div>
+{% endblock main_content %}

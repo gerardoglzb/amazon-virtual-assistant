@@ -44,7 +44,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		console.log("yessir");
 		$('form').on('submit', function(e) {
 			e.preventDefault();
 			my_url = "{{ url_for('products.add_product') }}";
@@ -58,7 +57,6 @@
                 		alert("Whoopsie!");
                 		console.log(data.error);
                 	} else {
-                		console.log("sending check job");
                 		check_job_status(data.location);
                 	}
                 }
@@ -68,7 +66,6 @@
 
 	function check_job_status(status_url) {
 		console.log("checking...");
-		console.log(status_url);
 		$.getJSON(status_url, function(data) {
 		    switch (data.status) {
 				case "unknown":

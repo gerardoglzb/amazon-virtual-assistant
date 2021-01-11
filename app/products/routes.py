@@ -16,7 +16,7 @@ products = Blueprint('products', __name__)
 @login_required
 def new_product():
 	form = ProductForm()
-	return render_template('add_product.html', title="Add Product", form=form)
+	return render_template('add_product.html', title="Add Product", form=form, active=2)
 
 
 @products.route('/product/add', methods=['POST'])

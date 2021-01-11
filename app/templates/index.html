@@ -1,8 +1,28 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+	<div class="product-board card-columns">
 	{% for product in products.items %}
-		<article class="media content-section"><img class="rounded-circle article-img" src="{{ product.img }}"></img>
+		<div class="card product-item">
+			<img src="{{ product.img }}" class="card-img-top">
+			<div class="card-body">
+				{% if product.name|length > 375 %}
+					<h5 class="card-title">{{ product.name[:75] }}...</h5>
+				{% else %}
+					<h5 class="card-title">{{ product.name }}</h5>
+				{% endif %}
+				<p class="card-text">Current price: {{ product.current_price }} {{ product.currency_code }}
+					<br>
+					Your preferred price: {{ product.optimal_price }} {{ product.currency_code }}</p>
+				<a href="{{ product.link }}" class="btn btn-primary" target="_blank">Buy</a>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+{% endblock content %}
+
+
+<!-- 		<article class="media content-section"><img class="rounded-circle article-img" src="{{ product.img }}"></img>
 			<div class="media-body">
 				<div class="article-metadata">
 					<a class="mr-2" href="{{ product.link }}" target="_blank">Amazon page</a>
@@ -12,17 +32,4 @@
 				<p class="article-content">Current price: {{ product.current_price }} {{ product.currency_code }}</p>
 				<p class="article-content">Optimal price: {{ product.optimal_price }} {{ product.currency_code }}</p>
 			</div>
-		</article>
-	{% endfor %}
-	{% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-		{% if page_num %}
-			{% if products.page == page_num %}
-				<a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-			{% else %}
-				<a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-			{% endif %}
-		{% else %}
-			...
-		{% endif %}
-	{% endfor %}
-{% endblock content %}
+		</article> -->
