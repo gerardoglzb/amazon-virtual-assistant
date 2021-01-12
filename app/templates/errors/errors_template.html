@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+	<div class="content-section text-center error-caption">
+        <h1 class="">{{ code }}</h1>
+        <h3>{{ msg }}</h3>
+        <!-- <div class="error-btns"> -->
+        	<a class="btn btn-outline-dark btn-lg" href="{{ url_for('main.home') }}">GO HOME</a>
+        	<a class="btn btn-outline-dark btn-lg" href="https://github.com/gerardoglzb/amazon-virtual-assistant/issues" target="_blank">REPORT A PROBLEM</a>
+        <!-- </div> -->
+	</div>
+{% endblock content %}

@@ -9,7 +9,7 @@ class RegistrationForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=30)])
-	confirm_password = PasswordField('ConfirmPassword', validators=[DataRequired(), EqualTo('password')])
+	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Sign Up')
 
 	def validate_username(self, username):
@@ -60,5 +60,5 @@ class RequestResetForm(FlaskForm):
 
 class ResetForm(FlaskForm):
 	password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=30)])
-	confirm_password = PasswordField('ConfirmPassword', validators=[DataRequired(), EqualTo('password')])
+	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Reset Password')

@@ -96,7 +96,7 @@ body {
 	padding-bottom: 1rem;
 }
 
-.btn-lg {
+.caption .btn-lg {
 	border-width: medium;
 	border-radius: 0;
 	text-shadow: .05rem 0.5rem .3rem black;
@@ -164,4 +164,26 @@ body {
 	margin-left: 10%;
 	width: 80%;
 	justify-content: space-around;
+}
+
+.error-caption {
+	margin-top: 35vh;
+}
+
+.error-caption h1 {
+	font-size: 4rem;
+	font-weight: 750;
+	letter-spacing: .3rem;
+	padding-bottom: .5rem;
+}
+
+.error-caption h3 {
+	font-size: 2rem;
+	padding-bottom: 1rem;
+}
+
+.error-caption .btn-lg {
+	border-width: medium;
+	border-radius: 0;
+	padding: .6rem .8rem;
 }
