@@ -7,29 +7,13 @@
 			<legend class="border-bottom mb-4">{{ title }}</legend>
 			<div class="form-group">
 				{{ form.link.label(class='form-control-label') }}
-				{% if form.link.errors %}
-					{{ form.link(class='form-control form-control-lg is-invalid') }}
-					<div class="invalid-feedback">
-						{% for error in form.link.errors %}
-							<span>{{ error }}</span>
-						{% endfor %}
-					</div>
-				{% else %}
-					{{ form.link(class='form-control form-control-lg') }}
-				{% endif %}
+				{{ form.link(class='form-control form-control-lg', id='link-input') }}
+				<div class="invalid-feedback" id="errors-link"></div>
 			</div>
 			<div class="form-group">
 				{{ form.optimal_price.label(class='form-control-label') }}
-				{% if form.optimal_price.errors %}
-					{{ form.optimal_price(class='form-control form-control-lg is-invalid') }}
-					<div class="invalid-feedback">
-						{% for error in form.optimal_price.errors %}
-							<span>{{ error }}</span>
-						{% endfor %}
-					</div>
-				{% else %}
-					{{ form.optimal_price(class='form-control form-control-lg') }}
-				{% endif %}
+				{{ form.optimal_price(class='form-control form-control-lg', id='optimal_price-input') }}
+				<div class="invalid-feedback" id="errors-optimal_price"></div>
 			</div>
 		</fieldset>
 		<div class="form-group">
@@ -52,9 +36,12 @@
 				url: '/product/add',
                 success: function(data) {
                 	if (data.error) {
-                		// TODO: Error handling.
-                		alert("Whoopsie!");
-                		console.log(data.error);
+            			for (error in data.error) {
+            				$('#' + error + '-input').addClass('is-invalid');
+            				var error_span = document.createElement('span');
+            				error_span.innerText = data.error[error];
+            				$('#errors-' + error).append(error_span);
+            			}
                 	} else {
                 		check_job_status(data.location);
                 	}
@@ -80,7 +67,6 @@
 					alert("Invalid user. Make sure it exists and has reviews.");
 					break;
 				default:
-					console.log("1 sec wait");
 					setTimeout(function() {
 						check_job_status(status_url);
 					}, 1000);
