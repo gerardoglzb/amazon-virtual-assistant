@@ -54,29 +54,27 @@ def job_status(job_id):
 	return jsonify(response)
 
 
-@products.route('/product/<int:product_id>')
-def product(product_id):
-	product = Product.query.get_or_404(product_id)
-	return render_template('product.html', title=product.name, product=product)
+# @products.route('/product/<int:product_id>')
+# def product(product_id):
+# 	product = Product.query.get_or_404(product_id)
+# 	return render_template('product.html', title=product.name, product=product)
 
 
-@products.route('/product/<int:product_id>/update', methods=['GET', 'POST'])
+# TODO: Rewrite this whole thing
+@products.route('/product/<int:product_id>/update', methods=['POST'])
 @login_required
 def update_product(product_id):
 	product = Product.query.get_or_404(product_id)
 	if product.author != current_user:
 		abort(403)
 	form = ProductForm()
+	form.link.data = product.link
 	if form.validate_on_submit():
-		product.link = form.link.data
 		product.optimal_price = form.optimal_price.data
 		db.session.commit()
 		flash("Update successful.", 'success')
-		return redirect(url_for('products.product', product_id=product.id))
-	if request.method == 'GET':
-		form.link.data = product.link
-		form.optimal_price.data = product.optimal_price
-	return render_template('add_product.html', title="Update Product", form=form)
+		return jsonify(status="successful")
+	return jsonify(error=form.errors) # could return nothing in some cases.
 
 
 @products.route('/product/<int:product_id>/delete', methods=['POST'])
