@@ -98,6 +98,7 @@ def get_default_currency_code(url):
 
 
 def get_product_data(form_data):
+	print("GETTING PRODUCT DATA")
 	# TODO: Make sure form_data has link and optimal_price.
 	user_agents = [
 		# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -112,6 +113,8 @@ def get_product_data(form_data):
 	headers = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", "Accept-Encoding": "gzip, deflate, br", "Accept-Language": "es-ES,es;q=0.9,en;q=0.8", "Referer": "http://www.google.com/", "User-Agent": user_agent}
 	source = requests.get(form_data['link'], headers=headers, timeout=10)
 
+	print("REQUEST GOTTEN")
+
 	# TODO: Handle this
 	if source.status_code != 200:
 		return False
@@ -119,17 +122,22 @@ def get_product_data(form_data):
 	soup = BeautifulSoup(source.text, "lxml")
 	data = {}
 
+	print("BEAUTIFULSOUPPED")
+
 	name_el = soup.find(id="productTitle")
 	name = name_el.get_text(strip=True) if name_el else None
 	if name:
 		data['name'] = name
+		print("YES NAME")
 	else:
 		# Couldn't find name
+		print("NO NAME")
 		return
 
 	seller_el = soup.find(id="sellerProfileTriggerId")
 	seller = seller_el.get_text(strip=True) if seller_el else None
 	if seller:
+		print("YES SELLER")
 		data['seller'] = seller
 
 	price_el = soup.find(id="price_inside_buybox")
@@ -138,8 +146,10 @@ def get_product_data(form_data):
 	price_matches = re.findall(r"[-+]?\d*\.\d+|\d+", price_string) if price_string else None
 	price = float(price_matches[0]) if price_matches and len(price_matches) == 1 else None
 	if price:
+		print("YES PRICE")
 		data['price'] = price
 	else:
+		print("NO PRICE")
 		# Couldn't find prize
 		return
 
@@ -153,12 +163,14 @@ def get_product_data(form_data):
 	image_list = list(image_dict.keys()) if image_dict else None
 	image = image_list[-1] if image_list else ""
 	if image:
+		print("YES IMAGE")
 		data['image'] = image
 
 	availability_el_el = soup.find(id="availability")
 	availability_el = availability_el_el.find("span") if availability_el_el else None
 	availability = availability_el.get_text(strip=True) if availability_el else ""
 	if availability:
+		print("YES AVAILABILITY")
 		data['availability'] = availability
 
 	currency_el_el = soup.find(id="icp-touch-link-cop")
@@ -166,15 +178,23 @@ def get_product_data(form_data):
 	currency = currency_el.get_text(strip=True) if currency_el else None
 	currency_code = currency.split(' ', 1)[0] if currency else ""
 	if currency_code:
+		print("YES CODE")
 		data['currency_code'] = currency_code
 
 	data['link'] = form_data['link']
 	data['optimal_price'] = float(form_data['optimal_price'])
 
+	print("CREATING APP CONTEXT")
 	app = create_app()
 	with app.app_context():
+		print("IN CONTEXT")
 		author = User.query.get(form_data['user_id'])
+		print("AUTHOR COLLECTED")
 		product = Product(name=data.get('name', "Unknown product"), seller=data.get('seller', "Unknown seller"), currency_code=data.get('currency_code', get_default_currency_code(form_data['link'])), current_price=data.get('price', -1.0), optimal_price=data.get('optimal_price', -1.0), available=data.get('availability', ""), link=data.get('link', "amazon.com"), author=author)
+		print("PRODUCT CREATED")
 		product.img = data.get('image', product.img)
+		print("IMAGE ADDED")
 		db.session.add(product)
+		print("PRODUCT ADDED")
 		db.session.commit()
+		print('PRODUCT COMMITTED')

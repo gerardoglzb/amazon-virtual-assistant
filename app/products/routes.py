@@ -23,16 +23,28 @@ def new_product():
 @login_required
 def add_product():
 	form = ProductForm()
+	print("FORM CREATED")
 	if form.validate_on_submit():
-		if Product.query.count() < 20:
-			if Product.query.filter_by(author=current_user).count() < 5: # max concurrent products
+		print("FORM VALIDATED")
+		if Product.query.count() < 20: # max total products
+			print("DATABASE FREE")
+			if Product.query.filter_by(author=current_user).count() < 10: # max concurrent products
+				print("LIMIT NOT REACHED")
 				form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
+				print("FORM DATA RETRIEVED:")
+				print(form_data['link'], form_data['optimal_price'], form_data['user_id'])
 				job = q.enqueue(get_product_data, form_data)
+				print("JOB ENQUEUED")
 				return jsonify(location=url_for('products.job_status', job_id=job.get_id()))
 			else:
+				print("LIMIT REACHED")
 				flash("Sorry. You've reached your product limit.", 'warning')
+				print("FLASHED 1")
 		else:
+			print("DATABASE FULL")
 			flash("Sorry. Our database is full at the moment.", 'info')
+			print("FLASHED 2")
+	print("ERRORS DETECTED")
 	return jsonify(error=form.errors) # could return nothing in some cases.
 
 
