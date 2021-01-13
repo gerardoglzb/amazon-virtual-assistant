@@ -93,6 +93,10 @@
         </body>
 
         <footer>
+            <script type="text/javascript">
+                var add_product_url = "{{ url_for('products.add_product') }}";
+                var home_url = "{{ url_for('main.home') }}";
+            </script>
             {% block layout_js %}
             {% endblock layout_js %}
             {% block js %}

@@ -28,58 +28,5 @@
 {% endblock content %}
 
 {% block js %}
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('form').on('submit', function(e) {
-			e.preventDefault();
-			// This works as long as there's only one button and loading spinner.
-			var b = $(".btn").first();
-			var s = $(".loading-spinner").first();
-			showLoadingSpinner(b, s);
-			my_url = "{{ url_for('products.add_product') }}";
-			$.ajax({
-				data: $('form').serialize(),
-				type: 'POST',
-				url: '/product/add',
-                success: function(data) {
-                	if (data.error) {
-            			for (error in data.error) {
-            				$('#' + error + '-input').addClass('is-invalid');
-            				var error_span = document.createElement('span');
-            				error_span.innerText = data.error[error];
-            				$('#errors-' + error).append(error_span);
-            			}
-                	} else {
-                		check_job_status(data.location);
-                	}
-                }
-			});
-		});
-	});
-
-	function check_job_status(status_url) {
-		console.log("checking...");
-		$.getJSON(status_url, function(data) {
-			console.log(data.status);
-		    switch (data.status) {
-				case "unknown":
-				case "failed":
-				case "amazon":
-				case "invalid":
-					var b = $(".btn").first();
-					var s = $(".loading-spinner").first();
-					hideLoadingSpinner(b, s);
-					alert(data.msg);
-					break;
-				case "finished":
-					window.location.replace("{{ url_for('main.home') }}");
-		          	break;
-				default:
-					setTimeout(function() {
-						check_job_status(status_url);
-					}, 1000);
-	    	}
-	    });
-	}
-</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/add_product.js') }}"></script>
 {% endblock js %}
