@@ -11,12 +11,12 @@
 				{% else %}
 					<h5 class="card-title">{{ product.name }}</h5>
 				{% endif %}
-				<p class="card-text">Current price: {{ product.current_price }} {{ product.currency_code }}
+				<p class="card-text">Current price: {{ '%0.2f' | format(product.current_price|float) }} {{ product.currency_code }}
 					<br>
-					Your preferred price: {{ product.optimal_price }} {{ product.currency_code }}</p>
+					Your preferred price: {{ '%0.2f' | format(product.optimal_price|float) }} {{ product.currency_code }}</p>
 				<div class="btn-section text-center">
 					<a href="{{ product.link }}" class="btn btn-primary" target="_blank">Buy</a>
-					<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal" data-current-price="{{ product.current_price }}" data-optimal-price="{{ product.optimal_price }}" data-currency-code="{{ product.currency_code }}" data-url="{{ url_for('products.update_product', product_id=product.id) }}">Edit</button>
+					<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal" data-current-price="{{ '%0.2f' | format(product.current_price|float) }}" data-optimal-price="{{ '%0.2f' | format(product.optimal_price|float) }}" data-currency-code="{{ product.currency_code }}" data-url="{{ url_for('products.update_product', product_id=product.id) }}">Edit</button>
 					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-url="{{ url_for('products.delete_product', product_id=product.id) }}" data-price="{{ product.optimal_price }}" data-name="{{ product.name }}">Delete</button>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 					<label for="newPrice" class="col-sm-5 col-form-label text-right">Your new price: </label>
 					<div class="col-sm-6">
 						<!-- <input type="number" step="0.01" class="form-control" id="newPrice" placeholder="0.00"> -->
-						{{ form.optimal_price(class='form-control', id='optimal-price-input') }}
+						{{ form.optimal_price(class='form-control', id='optimal-price-input', oninput='validate_price(this)') }}
 						<div class="invalid-feedback" id="invalid-feedback-div"></div>
 					</div>
 					<div class="col-sm-1"></div>

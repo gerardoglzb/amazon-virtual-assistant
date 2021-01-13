@@ -30,7 +30,7 @@ def add_product():
 			print("DATABASE FREE")
 			if Product.query.filter_by(author=current_user).count() < 10: # max concurrent products
 				print("LIMIT NOT REACHED")
-				form_data = {'link': form.link.data, 'optimal_price': form.optimal_price.data, 'user_id': current_user.id}
+				form_data = {'link': form.link.data, 'optimal_price': round(form.optimal_price.data, 2), 'user_id': current_user.id}
 				print("FORM DATA RETRIEVED:")
 				print(form_data['link'], form_data['optimal_price'], form_data['user_id'])
 				job = q.enqueue(get_product_data, form_data)
@@ -93,7 +93,7 @@ def update_product(product_id):
 	form = ProductForm()
 	form.link.data = product.link
 	if form.validate_on_submit():
-		product.optimal_price = form.optimal_price.data
+		product.optimal_price = round(form.optimal_price.data, 2)
 		db.session.commit()
 		flash("Update successful.", 'success')
 		return jsonify(status="successful")
