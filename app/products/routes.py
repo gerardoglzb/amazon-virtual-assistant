@@ -53,13 +53,24 @@ def add_product():
 def job_status(job_id):
 	job = q.fetch_job(job_id)
 	if not job:
-		response = {'status': 'unknown'}
-	elif job.result is False:
-		response = {'status': 'invalid'}
+		response = {
+			'status': 'unknown',
+			'msg': "Something went wrong. Try again in a few seconds."
+		}
+	elif job.result == 0:
+		response = {
+			'status': 'amazon',
+			'msg': "We're having problems with Amazon. Try again later."
+		}
+	elif job.result == 1:
+		response = {
+			'status': 'invalid',
+			'msg': "We're having trouble reading this page. Try later or try a different product."
+		}
 	else:
 		response = {
 			'status': job.get_status(),
-			'image': job.result
+			'msg': "Something went wrong. Try again in a few seconds."
 		}
         # if job.is_failed:
             # response['message'] = job.exc_info.strip().split('\n')[-1]

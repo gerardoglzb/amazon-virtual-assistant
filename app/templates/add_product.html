@@ -18,6 +18,9 @@
 		</fieldset>
 		<div class="form-group">
 			{{ form.submit(class='btn btn-outline-info') }}
+			<div class="spinner-border text-info loading-spinner" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
 		</div>
 	</form>
 </div>
@@ -29,6 +32,10 @@
 	$(document).ready(function() {
 		$('form').on('submit', function(e) {
 			e.preventDefault();
+			// This works as long as there's only one button and loading spinner.
+			var b = $(".btn").first();
+			var s = $(".loading-spinner").first();
+			showLoadingSpinner(b, s);
 			my_url = "{{ url_for('products.add_product') }}";
 			$.ajax({
 				data: $('form').serialize(),
@@ -53,19 +60,20 @@
 	function check_job_status(status_url) {
 		console.log("checking...");
 		$.getJSON(status_url, function(data) {
+			console.log(data.status);
 		    switch (data.status) {
 				case "unknown":
-					alert("Unknown job");
+				case "failed":
+				case "amazon":
+				case "invalid":
+					var b = $(".btn").first();
+					var s = $(".loading-spinner").first();
+					hideLoadingSpinner(b, s);
+					alert(data.msg);
 					break;
 				case "finished":
 					window.location.replace("{{ url_for('main.home') }}");
 		          	break;
-				case "failed":
-					alert("Job failed");
-					break;
-				case "invalid":
-					alert("Invalid user. Make sure it exists and has reviews.");
-					break;
 				default:
 					setTimeout(function() {
 						check_job_status(status_url);

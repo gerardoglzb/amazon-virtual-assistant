@@ -117,7 +117,7 @@ def get_product_data(form_data):
 
 	# TODO: Handle this
 	if source.status_code != 200:
-		return False
+		return 0
 
 	soup = BeautifulSoup(source.text, "lxml")
 	data = {}
@@ -132,7 +132,7 @@ def get_product_data(form_data):
 	else:
 		# Couldn't find name
 		print("NO NAME")
-		return
+		return 1
 
 	seller_el = soup.find(id="sellerProfileTriggerId")
 	seller = seller_el.get_text(strip=True) if seller_el else None
@@ -151,7 +151,7 @@ def get_product_data(form_data):
 	else:
 		print("NO PRICE")
 		# Couldn't find prize
-		return
+		return 1
 
 	# shipping_el_el = soup.find(id="ourprice_shippingmessage")
 	# shipping_el = shipping_el_el.find("span") if shipping_el_el else None

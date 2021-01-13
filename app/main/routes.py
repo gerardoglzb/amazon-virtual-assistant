@@ -22,3 +22,8 @@ def home():
 @main.route('/about')
 def about():
 	return render_template('about.html', title="About", active=1)
+
+
+@main.route('/testing')
+def testing():
+	return render_template('testing.html')

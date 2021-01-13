@@ -13,4 +13,15 @@
 		{% block content %}
 		{% endblock content %}
 	</div>
+	<script type="text/javascript">
+		function showLoadingSpinner(button, spinner) {
+			button.css('display', 'none');
+			spinner.css('display', 'inline-block');
+		}
+
+		function hideLoadingSpinner(button, spinner) {
+			spinner.css('display', 'none');
+			button.css('display', 'inline-block');
+		}
+	</script>
 {% endblock main_content %}
