@@ -12,3 +12,13 @@ var validate_price = function(e) {
 	var t = e.value;
 	e.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), 3)) : t;
 }
+
+function deleteFlashAlerts() {
+	setTimeout(function() {
+		$('.alert').remove();
+	}, 10000);
+}
+
+$(document).ready(function() {
+	deleteFlashAlerts();
+});
