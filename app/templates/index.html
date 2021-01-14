@@ -63,27 +63,27 @@
 			<form method="POST" action="" id="edit-form">
 				{{ form.hidden_tag() }}
 				<div class="form-group row">
-					<label for="currentPrice" class="col-sm-5 col-form-label text-right" style="">Current price: </label>
-					<div class="col-sm-6">
+					<label for="currentPrice" class="col-5 col-form-label text-right" style="">Current price: </label>
+					<div class="col-6">
 						<input type="text" readonly class="form-control-plaintext" id="currentPrice" value="Unknown">
 					</div>
-					<div class="col-sm-1"></div>
+					<div class="col-1"></div>
 				</div>
 				<div class="form-group row">
-					<label for="optimalPrice" class="col-sm-5 col-form-label text-right" style="">Your preferred price: </label>
-					<div class="col-sm-6">
+					<label for="optimalPrice" class="col-5 col-form-label text-right" style="">Your preferred price: </label>
+					<div class="col-6">
 						<input type="text" readonly class="form-control-plaintext" id="optimalPrice" value="Unknown">
 					</div>
-					<div class="col-sm-1"></div>
+					<div class="col-1"></div>
 				</div>
 				<div class="form-group row">
-					<label for="newPrice" class="col-sm-5 col-form-label text-right">Your new price: </label>
-					<div class="col-sm-6">
+					<label for="newPrice" class="col-5 col-form-label text-right">Your new price: </label>
+					<div class="col-6">
 						<!-- <input type="number" step="0.01" class="form-control" id="newPrice" placeholder="0.00"> -->
 						{{ form.optimal_price(class='form-control', id='optimal-price-input', oninput='validate_price(this)') }}
 						<div class="invalid-feedback" id="invalid-feedback-div"></div>
 					</div>
-					<div class="col-sm-1"></div>
+					<div class="col-1"></div>
 				</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
