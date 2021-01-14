@@ -45,6 +45,11 @@ $(document).ready(function() {
             	} else {
             		window.location.href = home_url;
             	}
+            },
+            error: function(xhr, status, error) {
+            	// var errorMessage = xhr.status + ': ' + xhr.statusText
+            	alert("An error has occurred. Please try again later.");
+            	hideLoadingSpinner(b, s);
             }
 		});
 	});

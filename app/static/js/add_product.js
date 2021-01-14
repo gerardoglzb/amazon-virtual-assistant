@@ -9,6 +9,7 @@ $(document).ready(function() {
 			data: $('form').serialize(),
 			type: 'POST',
 			url: add_product_url,
+			timeout: 10000,
             success: function(data) {
             	if (data.error) {
         			for (error in data.error) {
@@ -20,6 +21,11 @@ $(document).ready(function() {
             	} else {
             		check_job_status(data.location);
             	}
+            },
+            error: function(xhr, status, error) {
+            	// var errorMessage = xhr.status + ': ' + xhr.statusText
+            	alert("An error has occurred. Please try again later.");
+            	hideLoadingSpinner(b, s);
             }
 		});
 	});
