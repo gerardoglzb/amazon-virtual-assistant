@@ -1,8 +1,20 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+{% if products.count() == 0 %}
+    <div class="error-caption landing-caption text-center">
+        <h2>YOU HAVE NO PRODUCTS AT THE MOMENT</h2>
+        <!-- <h4>Try adding one to your board in just a few steps.</h4> -->
+        <!-- <div class="top-btn"> -->
+        	<!-- <a class="btn btn-outline-dark btn-lg" href="{{ url_for('users.register') }}">ADD A PRODUCT</a> -->
+        <!-- </div> -->
+        <div class="bottom-btn">
+        	<a class="btn btn-outline-dark btn-lg" href="{{ url_for('products.new_product') }}">TRY ADDING ONE</a>
+        </div>
+    </div>
+{% else %}
 	<div class="product-board card-columns">
-	{% for product in products.items %}
+	{% for product in products %}
 		<div class="card product-item">
 			<img src="{{ product.img }}" class="card-img-top">
 			<div class="card-body">
@@ -23,6 +35,7 @@
 		</div>
 	{% endfor %}
 	</div>
+{% endif %}
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
