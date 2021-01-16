@@ -8,7 +8,6 @@ import redis
 from rq import Queue
 from rq.job import Job
 from worker import conn
-from apscheduler.schedulers.background import BackgroundScheduler
 
 
 db = SQLAlchemy()
@@ -42,12 +41,5 @@ def create_app(config_class=Config):
 	app.register_blueprint(products)
 	app.register_blueprint(main)
 	app.register_blueprint(errors)
-
-	from app.products.utils import update_products
-
-	# TODO: Uncomment this for production mode.
-	# scheduler = BackgroundScheduler()
-	# scheduler.add_job(update_products, trigger='interval', hours=6, id='update_products_id', replace_existing=True)
-	# scheduler.start()
 
 	return app
