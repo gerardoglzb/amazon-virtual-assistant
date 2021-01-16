@@ -1,3 +1,4 @@
+alembic==1.4.3
 APScheduler==3.6.3
 bcrypt==3.2.0
 beautifulsoup4==4.9.3
@@ -13,6 +14,8 @@ Flask==1.1.2
 Flask-Bcrypt==0.7.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
+Flask-Migrate==2.5.3
+Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.4
 Flask-WTF==0.14.3
 gunicorn==20.0.4
@@ -20,8 +23,12 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 lxml==4.6.2
+Mako==1.1.4
 MarkupSafe==1.1.1
+psycopg2==2.8.6
 pycparser==2.20
+python-dateutil==2.8.1
+python-editor==1.0.4
 pytz==2020.5
 redis==3.5.3
 requests==2.25.1
