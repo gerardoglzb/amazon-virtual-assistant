@@ -16,7 +16,7 @@ var validate_price = function(e) {
 
 function deleteFlashAlerts() {
 	setTimeout(function() {
-		$('.alert').remove();
+		$('.alert').alert('close');
 	}, 10000);
 }
 
