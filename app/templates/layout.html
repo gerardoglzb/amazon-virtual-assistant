@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block main_content %}
-	<main role="main" class="container main-container">
+	<main role="main" class="container main-container" id="main-container">
 	    {% with messages = get_flashed_messages(with_categories=true) %}
 	        {% if messages %}
 	            {% for category, message in messages %}

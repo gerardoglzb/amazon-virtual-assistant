@@ -48,7 +48,7 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
             	// var errorMessage = xhr.status + ': ' + xhr.statusText
-            	alert("An error has occurred. Please try again later.");
+            	addFlashAlert("An error has occurred. Please try again later.", 'danger');
             	hideLoadingSpinner(b, s);
             }
 		});

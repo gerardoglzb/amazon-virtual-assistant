@@ -24,7 +24,7 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
             	// var errorMessage = xhr.status + ': ' + xhr.statusText
-            	alert("An error has occurred. Please try again later.");
+            	addFlashAlert("An error has occurred. Please try again later.", 'danger');
             	hideLoadingSpinner(b, s);
             }
 		});
@@ -43,7 +43,7 @@ function check_job_status(status_url) {
 				var b = $(".btn").first();
 				var s = $(".loading-spinner").first();
 				hideLoadingSpinner(b, s);
-				alert(data.msg);
+				addFlashAlert(data.msg, 'danger');
 				break;
 			case "finished":
 				window.location.replace(home_url);
