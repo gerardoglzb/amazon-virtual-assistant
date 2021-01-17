@@ -39,7 +39,7 @@ def update_products():
 						send_product_notification(product, conn)
 				if (now - product.date_added).days >= 30:
 					db.session.delete(product)
-				time.sleep(10)
+				time.sleep(5)
 			db.session.commit()
 
 

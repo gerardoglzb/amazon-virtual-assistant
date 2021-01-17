@@ -1,4 +1,5 @@
 function showLoadingSpinner(button, spinner) {
+	console.log("showing spinner");
 	button.css('display', 'none');
 	spinner.css('display', 'inline-block');
 }
