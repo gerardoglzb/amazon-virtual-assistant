@@ -89,7 +89,8 @@ def get_default_currency_code(url):
 		'www.amazon.co.uk/': 'GBP',
 		'www.amazon.com/': 'USD',
 		'www.amazon.ca/': 'CAD',
-		'www.amazon.com.au/': 'AUD'
+		'www.amazon.com.au/': 'AUD',
+		'www.amazon.com.mx/': 'MX'
 	}
 	matches = re.findall(r"www.amazon.c[aom.uk]{1,5}/", url)
 	if matches:

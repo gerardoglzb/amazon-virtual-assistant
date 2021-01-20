@@ -7,8 +7,10 @@ with app.app_context():
 
 	scheduler = BlockingScheduler()
 
-	@sched.scheduled_job('cron', day_of_week='mon-sun', hour='0,6,12,18', id='update_products_id', replace_existing=True)
-	def update_products_job():
-		update_products()
+	scheduler.add_job(update_products, 'cron', day_of_week='mon-sun', hour='0,6,12,18', id='update_products_id', replace_existing=True)
+
+	# @scheduler.scheduled_job('cron', day_of_week='mon-sun', hour='0,6,12,18', id='update_products_id', replace_existing=True)
+	# def update_products_job():
+		# update_products()
 
 	scheduler.start()
