@@ -49,6 +49,7 @@ A simple web app where a user can add Amazon products through their urls and hav
 * [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
 * [APScheduler](https://apscheduler.readthedocs.io/en/stable/)
 * [Redis](https://redis.io/)
+* [PostgreSQL](https://www.postgresql.org/)
 
 
 
@@ -75,6 +76,26 @@ git clone https://github.com/gerardoglzb/amazon-virtual-assistant.git
 ```sh
 pip3 install -r requirements.txt
 ```
+
+3. Set up the environment variables
+
+* EMAIL_USER
+The email account you want to use to send notifications (it must be a Gmail account, unless you modify it).
+
+* EMAIL_PASSWORD
+The password to your email account.
+
+* SECRET_KEY
+A secret key for your server.
+
+* DATABASE_URL
+Url for your PostgreSQL database.
+
+* REDISTOGO_URL
+Url for your redis server.
+
+* DEBUG_VALUE
+"True" if you want to activate debug mode.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
