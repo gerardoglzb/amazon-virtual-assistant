@@ -10,8 +10,8 @@
     <a href="https://github.com/gerardoglzb/amazon-virtual-assistant"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <!-- <a href="https://type-racing.herokuapp.com/">View Demo</a> -->
-    <!-- · -->
+    <a href="http://amazon-va.herokuapp.com/">View Demo</a>
+    ·
     <a href="https://github.com/gerardoglzb/amazon-virtual-assistant/issues">Report Bug</a>
     ·
     <a href="https://github.com/gerardoglzb/amazon-virtual-assistant/issues">Request Feature</a>
@@ -38,6 +38,9 @@
 [![Product Name Screen Shot][product-screenshot]](http://amazon-va.herokuapp.com/)
 
 A simple web app where a user can add Amazon products through their urls and have them all displayed on their personal board. Alongside each product, they're able to specify a price they're looking for, and whenever a product drops below said price, the app will also notify the user through their email.
+
+This project was created for <a href="https://www.youtube.com/c/TechWithTim/videos">Tech With Tim</a>'s Timathon.
+It's worth noting that the website won't actually notify you since I didn't want to pay $21 for a third dyno on heroku.
 
 ### Built With
 * HTML5
