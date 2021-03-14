@@ -22,8 +22,6 @@ q = Queue(connection=conn, default_timeout=1800)
 def create_app(config_class=Config):
 	app = Flask(__name__)
 	app.config.from_object(Config)
-	print("here we gooooooo")
-	print(app.config['SQLALCHEMY_DATABASE_URI'])
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 	from app import models
